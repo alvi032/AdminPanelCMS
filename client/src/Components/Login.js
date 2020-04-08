@@ -16,9 +16,10 @@ import Redirect from "react-router-dom/es/Redirect";
 const MyCard = styled(Card)({
 
     borderRadius:20,
-    boxShadow:'0 3px 5px 2px rgba(255, 105, 135, .3)',
-    padding:5
-
+    // boxShadow:'0 3px 5px 2px rgba(255, 105, 135, .3)',
+    background: '#f3f3f3',
+    boxShadow: '6px 6px 10px 0px rgba(112,112,112,0.16), -6px -6px 10px 0px #FFFFFF',
+    padding: '40px 10px'
 })
 
 
@@ -37,11 +38,9 @@ const MyButton = styled(Button)({
     border: 0,
     color: 'white',
     width: 100,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     justifyContent:"center",
-    textDecoration:"none"
+    textDecoration:"none",
     // margin:"auto"
-
 })
 
 // const useStyles = makeStyles((theme) => ({
@@ -80,19 +79,34 @@ function Login(){
     )
 
     //SETTING THE STATES
-    const [username,setUserName]=useState('')
-    const [password,setPassword]=useState('')
-    const [errorMessage,setErrorMessage]=useState('')
+    // const [username,setUserName]=useState('')
+    // const [password,setPassword]=useState('')
+    // const [errorMessage,setErrorMessage]=useState('')
 
+    const [form, setForm] = useState({
+        username: '',
+        password:'',
+        errorMessage: ''
+    })
+
+
+    const changeHandler = (event)=> {
+        setForm({
+            ...form,
+            [event.target.name] : event.target.value
+        })
+    }
 
     //POSTING USERNAME AND PASSWORD TO DB
     function handleClick(){
 
         const userObject = {
-            userName: username,
-            password: password
+            userName: form.username,
+            password: form.password
         }
 
+        let username = form.username
+        let password = form.password
         let letters = /^[0-9a-zA-Z]+$/
         let err= ''
 
@@ -115,7 +129,7 @@ function Login(){
                 .catch(err => console.error(err))
         }
 
-        setErrorMessage(err)
+        setForm({errorMessage: err})
 
 
     }
@@ -125,18 +139,17 @@ function Login(){
             <MyCard className='card'>
 
                 <div>
-                    <h1>Login</h1>
                     <MyAvatar/>
-                    <h4>Administrator</h4>
-                    <br/>
-                    <br/>
+                    <p className={'card-heading'}>Administrator</p>
 
                     <form>
                     <TextField
                         type="email"
                         label="Email"
+                        name={'username'}
+                        className={'login-input'}
                         placeholder="john@example.com"
-                        onChange = {event => setUserName(event.target.value)}
+                        onChange = {changeHandler}
                     />
                     <br/>
                     <br/>
@@ -144,25 +157,22 @@ function Login(){
                     <TextField
                         id="standard-password-input"
                         label="Password"
+                        name={'password'}
+                        className={'login-input'}
                         type="password"
-                        onChange = {event => setPassword(event.target.value)}
+                        onChange = {changeHandler}
                     />
                     <br/>
                     <br/>
                     <br/>
-                        {errorMessage}
+                        {form.errorMessage}
 
-                    <MyButton label="Submit" primary="true" style={style} onClick={handleClick}>Submit</MyButton>
+                    <MyButton label="Submit" primary="true" onClick={handleClick}>Submit</MyButton>
                     </form>
                 </div>
         </MyCard>
         </div>
     )
 }
-
-const style = {
-    margin: 15,
-}
-
 
 export default Login
