@@ -6,14 +6,24 @@
     justify-content: center;
     align-items: center;
     background-color: #f3f3f3;
-    font-family: Montserrat, sans-serif !important;
+    /*font-family: Montserrat, sans-serif !important;*/
+    font-family: 'Raleway', sans-serif;
 }
 
 .card{
-    max-width: 350px;
+    max-width: 300px;
     width: 100%;
+}
+
+.card-heading-main{
+    font-weight: 500;
+    padding: 2em;
+    line-height: 1.5em;
+    letter-spacing: 2px;
 }
 .card-heading{
     font-weight: 500;
+    padding: 2em;
+    letter-spacing: 2px;
 }
 

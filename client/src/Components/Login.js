@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import axios from 'axios'
+import image from '../images/app_icon_without_bg.png'
 
 import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button/index'
@@ -10,7 +11,6 @@ import Avatar from '@material-ui/core/Avatar'
 import { amber } from '@material-ui/core/colors'
 import { makeStyles } from '@material-ui/core/styles'
 import { styled } from '@material-ui/core/styles'
-import '../Fonts/SourceCodePro-Light.ttf'
 import Redirect from "react-router-dom/es/Redirect";
 
 const MyCard = styled(Card)({
@@ -19,7 +19,7 @@ const MyCard = styled(Card)({
     // boxShadow:'0 3px 5px 2px rgba(255, 105, 135, .3)',
     background: '#f3f3f3',
     boxShadow: '6px 6px 10px 0px rgba(112,112,112,0.16), -6px -6px 10px 0px #FFFFFF',
-    padding: '40px 10px'
+    padding: '50px 10px',
 })
 
 
@@ -40,6 +40,7 @@ const MyButton = styled(Button)({
     width: 100,
     justifyContent:"center",
     textDecoration:"none",
+    boxShadow: '0px 8px 10px -5px rgba(124,133,133,1)'
     // margin:"auto"
 })
 
@@ -86,7 +87,8 @@ function Login(){
     const [form, setForm] = useState({
         username: '',
         password:'',
-        errorMessage: ''
+        errorMessage: '',
+        letters:/^[0-9a-zA-Z]+$/
     })
 
 
@@ -111,7 +113,8 @@ function Login(){
         let err= ''
 
         if(username !== '' && !username.match(letters)){
-            err = <strong>Your username must contain only alphabets.</strong>
+            err = <strong>Your username must contain only alphanumerics.</strong>
+
         }
         else if(username === ''){
             err = <strong>Please enter your username.</strong>
@@ -125,8 +128,9 @@ function Login(){
         }
         else {
             axios.post(`/api/login`, userObject)
-                .then(<Link to='/home' />)
+                .then(window.location="/home")
                 .catch(err => console.error(err))
+
         }
 
         setForm({errorMessage: err})
@@ -139,23 +143,34 @@ function Login(){
             <MyCard className='card'>
 
                 <div>
-                    <MyAvatar/>
-                    <p className={'card-heading'}>Administrator</p>
+                    {/*<MyAvatar />*/}
+
+                    <img alt src={image} width="90" height="90" />
+                    <p className={'card-heading-main'}>COMPLAINT MANAGEMENT SYSTEM</p>
+                    {/*<p className={'card-heading'}>ADMIN</p>*/}
 
                     <form>
                     <TextField
-                        type="email"
-                        label="Email"
+                        error={form.username !== '' && !form.username.match(form.letters)}
+                        helperText={form.username !== '' && !form.username.match(form.letters) ? 'Use alphanumerics.' : ''}
+                        autoFocus
+                        id="outlined-basic"
+                        variant="outlined"
+                        type="username"
+                        label="Username"
                         name={'username'}
                         className={'login-input'}
-                        placeholder="john@example.com"
+                        placeholder="john123"
                         onChange = {changeHandler}
                     />
                     <br/>
                     <br/>
 
                     <TextField
-                        id="standard-password-input"
+                        // error={form.password === '' }
+                        // helperText={form.password === '' ? 'Password required.' : ''}
+                        id="outlined-basic"
+                        variant="outlined"
                         label="Password"
                         name={'password'}
                         className={'login-input'}
